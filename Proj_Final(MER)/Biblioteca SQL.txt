@@ -1,0 +1,92 @@
+CREATE SCHEMA biblioteca;
+SET search_path TO biblioteca;
+
+CREATE TABLE usuario (
+  id_usuario SERIAL PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  cpf VARCHAR(14) UNIQUE NOT NULL,
+  endereco TEXT,
+  telefone VARCHAR(15)
+);
+
+CREATE TABLE livro (
+  id_livro SERIAL PRIMARY KEY,
+  titulo VARCHAR(150) NOT NULL,
+  autor VARCHAR(100),
+  editora VARCHAR(100),
+  ano_publicacao INTEGER,
+  isbn VARCHAR(20) UNIQUE
+);
+
+CREATE TABLE funcionario (
+  id_funcionario SERIAL PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  cargo VARCHAR(50),
+  matricula VARCHAR(20) UNIQUE
+);
+
+CREATE TABLE emprestimo (
+  id_emprestimo SERIAL PRIMARY KEY,
+  data_emprestimo DATE NOT NULL DEFAULT CURRENT_DATE,
+  data_devolucao DATE,
+  id_usuario INTEGER NOT NULL REFERENCES usuario(id_usuario),
+  id_livro INTEGER NOT NULL REFERENCES livro(id_livro)
+);
+
+CREATE TABLE atendimento (
+  id_atendimento SERIAL PRIMARY KEY,
+  data DATE NOT NULL DEFAULT CURRENT_DATE,
+  id_usuario INTEGER NOT NULL REFERENCES usuario(id_usuario),
+  id_funcionario INTEGER NOT NULL REFERENCES funcionario(id_funcionario)
+);
+
+CREATE TABLE atendimento_livro (
+  id_atendimento INTEGER NOT NULL REFERENCES atendimento(id_atendimento) ON DELETE CASCADE,
+  id_livro INTEGER NOT NULL REFERENCES livro(id_livro),
+  PRIMARY KEY (id_atendimento, id_livro)
+);
+
+INSERT INTO usuario (nome, cpf, endereco, telefone)
+VALUES 
+  ('Ban_otf', '123.456.789-00', 'Rua das Bananas, 123', '(61) 99999-9999'),
+  ('Ana Silva', '987.654.321-00', 'Av. Central, 456', '(61) 98888-8888');
+
+INSERT INTO livro (titulo, autor, editora, ano_publicacao, isbn)
+VALUES 
+  ('Dom Casmurro', 'Machado de Assis', 'Globo', 1899, '978-85-250-1234-5'),
+  ('Memórias Póstumas', 'Machado de Assis', 'Companhia das Letras', 1881, '978-85-250-5678-9');
+
+INSERT INTO funcionario (nome, cargo, matricula)
+VALUES 
+  ('Carlos Mendes', 'Atendente', 'FUNC001'),
+  ('Juliana Rocha', 'Bibliotecária', 'FUNC002');
+
+INSERT INTO emprestimo (data_emprestimo, data_devolucao, id_usuario, id_livro)
+VALUES 
+  ('2025-11-10', '2025-11-17', 1, 1),
+  ('2025-11-12', NULL, 2, 2);
+
+INSERT INTO atendimento (data, id_usuario, id_funcionario)
+VALUES 
+  ('2025-11-15', 1, 1),
+  ('2025-11-16', 2, 2);
+
+INSERT INTO atendimento_livro (id_atendimento, id_livro)
+VALUES 
+  (1, 1),
+  (2, 2);
+
+-- Manipulação de dados (CRUD)
+
+-- Adicionar novo livro
+INSERT INTO livro (titulo, autor, editora, ano_publicacao, isbn)
+VALUES ('O Alienista', 'Machado de Assis', 'Saraiva', 1882, '978-85-250-9999-9');
+
+-- Atualizar editora do livro
+UPDATE livro
+SET editora = 'Nova Fronteira'
+WHERE titulo = 'O Alienista';
+
+-- Excluir livro
+DELETE FROM livro
+WHERE titulo = 'O Alienista';

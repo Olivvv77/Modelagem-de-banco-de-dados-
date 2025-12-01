@@ -1,0 +1,59 @@
+Dicionário de Dados – Sistema de Biblioteca
+Tabela: Usuário
+id_usuario: chave primária, numeração automática. Identificador único do usuário.
+
+nome: texto, obrigatório. Nome completo do usuário.
+
+cpf: texto, obrigatório e único. Documento de identificação.
+
+endereco: texto, opcional. Endereço residencial.
+
+telefone: texto, opcional. Telefone de contato.
+
+Tabela: Livro
+id_livro: chave primária, numeração automática. Identificador único do livro.
+
+titulo: texto, obrigatório. Título da obra.
+
+autor: texto, opcional. Nome do autor.
+
+editora: texto, opcional. Nome da editora.
+
+ano_publicacao: número inteiro, opcional. Ano de publicação.
+
+isbn: texto, único. Código ISBN da obra.
+
+Tabela: Funcionário
+id_funcionario: chave primária, numeração automática. Identificador único do funcionário.
+
+nome: texto, obrigatório. Nome completo.
+
+cargo: texto, opcional. Cargo ocupado.
+
+matricula: texto, único. Matrícula funcional.
+
+Tabela: Empréstimo
+id_emprestimo: chave primária, numeração automática. Identificador único do empréstimo.
+
+data_emprestimo: data, obrigatório. Data em que o empréstimo foi realizado.
+
+data_devolucao: data, opcional. Data prevista ou efetiva de devolução.
+
+id_usuario: chave estrangeira, obrigatório. Referência ao usuário que fez o empréstimo.
+
+id_livro: chave estrangeira, obrigatório. Referência ao livro emprestado.
+
+Tabela: Atendimento
+id_atendimento: chave primária, numeração automática. Identificador único do atendimento.
+
+data: data, obrigatório. Data do atendimento.
+
+id_usuario: chave estrangeira, obrigatório. Usuário atendido.
+
+id_funcionario: chave estrangeira, obrigatório. Funcionário responsável pelo atendimento.
+
+Tabela: Atendimento_Livro
+id_atendimento: chave primária e estrangeira. Referência ao atendimento.
+
+id_livro: chave primária e estrangeira. Referência ao livro envolvido no atendimento.
+
